@@ -1,6 +1,8 @@
-import 'package:e_commerce_app/components/Shirt_tile.dart';
-import 'package:e_commerce_app/models/Shirt.dart';
+import 'package:e_commerce_app/components/shirt_tile.dart';
+import 'package:e_commerce_app/models/shirt.dart';
+import 'package:e_commerce_app/models/cart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -10,9 +12,30 @@ class ShopPage extends StatefulWidget {
 }
 
 class _ShopPageState extends State<ShopPage> {
+
+  // add shirt to cart
+  void addShirtToCart(Shirt shirt){
+    Provider.of<Cart>(context, listen: false).addItemToCart(shirt);
+
+    // alert the user
+    showDialog(
+      context: context, 
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Successfully added!"
+        ),
+        content: Text(
+          "Check your cart"
+        ),
+      ),
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Consumer<Cart>(
+      builder: (context, value, child) => Column(
       children: [
         //search bar
         Container(
@@ -79,37 +102,25 @@ class _ShopPageState extends State<ShopPage> {
 
         SizedBox(height: 10,),
 
+        // list of shoe for sale
         Expanded(
           child: ListView.builder(
             itemCount: 4,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index){
+              // get a shirt from shop list
+              Shirt shirt = value.getShirtlist()[index];
 
-              Shirt shirt = Shirt(
-                name: "Men's T Shirt", 
-                price: "240", 
-                imagePath: "assets/T01.jpg", 
-                description: "Cool T shirt"
-              );
-
+              //return the shirt
               return ShirtTile(
                 shirt: shirt,
+                onTap: () => addShirtToCart(shirt)
               );
             },
           ),
         ),
-
-        
-
-
-        // Padding(
-        //   padding: const EdgeInsets.only(top: 25.0, left: 25 , right: 25),
-        //   child: Divider(
-        //       color:Colors.white
-        //     ),
-        // )
-
       ],
+    ),
     );
   }
 }

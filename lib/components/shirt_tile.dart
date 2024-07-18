@@ -1,12 +1,13 @@
 
-import 'package:e_commerce_app/models/Shirt.dart';
+import 'package:e_commerce_app/models/shirt.dart';
 import 'package:flutter/material.dart';
 
 class ShirtTile extends StatelessWidget {
 
   Shirt shirt;
+  void Function()? onTap;
 
-  ShirtTile({super.key, required this.shirt});
+  ShirtTile({super.key, required this.shirt, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +30,13 @@ class ShirtTile extends StatelessWidget {
           ),
 
           //description 
-          Text(
-            shirt.description,
-            style: TextStyle(
-              color: Colors.grey[600],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Text(
+              shirt.description,
+              style: TextStyle(
+                color: Colors.grey[600],
+              ),
             ),
           ),
 
@@ -62,26 +66,28 @@ class ShirtTile extends StatelessWidget {
                     )
                   ],
                 ),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(12),
-                      bottomRight: Radius.circular(12),
-                    )
-                  ),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
+                // button to add to cart
+                GestureDetector(
+                  onTap: onTap,
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      )
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
             
               ],
             ),
           ),
-          // button to add to cart
-          
         ],
       )
     );
